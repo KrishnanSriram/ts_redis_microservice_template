@@ -3,10 +3,13 @@ import {INameCheckVerficationResult} from "../../command/namechecker";
 
 export class FullNameChecker extends NameChecker{
     checkNameInText(name:string, text:string): INameCheckVerficationResult {
+        const lw_name = name.toLowerCase();
+        const lw_text = text.toLowerCase();
+        console.log('info', `Check for name ${name} in text`);
         // Don't modify text content and look for matching name
-        let result = this.checkNameAsIs(name, text);
+        let result = this.checkNameAsIs(lw_name, lw_text);
         if(result.status === false) {
-            result = this.checkNameWithoutPunctuations(name, text);
+            result = this.checkNameWithoutPunctuations(lw_name, lw_text);
         }
 
         return result;

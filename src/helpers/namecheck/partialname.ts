@@ -3,7 +3,9 @@ import {INameCheckVerficationResult} from "../../command/namechecker";
 
 export class PartialNameChecker implements INameChecker{
     checkNameInText(name:string, text:string): INameCheckVerficationResult {
-        return this.checkForPartialName(name, text);
+        const lw_name = name.toLowerCase();
+        const lw_text = text.toLowerCase();
+        return this.checkForPartialName(lw_name, lw_text);
     }
 
     /*
@@ -33,17 +35,19 @@ export class PartialNameChecker implements INameChecker{
         const partialNames = this.removeSingleLetterPartials(splitNames);
         const pipedName = partialNames.join('|');
         const regex = new RegExp(`\\b(${pipedName})\\b`, "gmi");
-        partialMatch = regex.test(text);
-        let partialMatchValue = regex.exec(text);
+        const partialMatchValue = regex.exec(text);
+        partialMatch = partialMatchValue ? true : false;
+            //regex.test(text);
 
         console.log('info', '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        console.log('info', 'MATCHES checkForPartialName:'+regex.exec(text));
+        console.log('info', 'MATCHES checkForPartialName:'+partialMatchValue);
         console.log('info', '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
         console.log('info', `Result of partial match test is ${partialMatch}`);
+        console.log('info', `Extracted name(s) is ${partialMatchValue}`);
         let extractName : string | null = null;
         if(partialMatchValue && partialMatchValue.length > 0) {
             extractName = partialMatchValue[0];
         }
-        return {status: partialMatchValue ? true : false, extractedName: extractName };
+        return {status: partialMatch, extractedName: extractName };
     }
 }
