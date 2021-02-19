@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && nodemon dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-my": "tsc && cp src/config/my.env ./dist/config/.env && env ENVIRONMENT=my nodemon dist/server.js",
+    "start": "tsc && cp src/config/.env ./dist/config/.env && env ENVIRONMENT=my nodemon dist/server.js",
+    "start-dev": "tsc && cp src/config/dev.env ./dist/config/.env && env ENVIRONMENT=my nodemon dist/server.js",
+    "start-qa": "tsc && cp src/config/qa.env ./dist/config/.env && env ENVIRONMENT=my nodemon dist/server.js",
+    "start-uat": "tsc && cp src/config/uat.env ./dist/config/.env && env ENVIRONMENT=my nodemon dist/server.js"
   },
   "keywords": [],
   "author": "",

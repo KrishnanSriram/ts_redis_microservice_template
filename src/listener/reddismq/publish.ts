@@ -6,9 +6,14 @@ export class ReddisMQPublishClient implements IMQPublishClient {
     private channel : string;
 
     constructor(port: number, host: string, password: string | null, channel: string) {
-        this.redisClient = redis.createClient({
-            port, host, password : password ?? ''
-        });
+        if(password)
+            this.redisClient = redis.createClient({
+                port, host, password : password
+            });
+        else
+            this.redisClient = redis.createClient({
+                port, host
+            });
         this.channel = channel;
     }
 

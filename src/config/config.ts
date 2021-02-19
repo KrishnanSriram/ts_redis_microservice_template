@@ -1,26 +1,27 @@
 import dotenv from 'dotenv';
+import path from 'path';
+const env_path: string = path.resolve(__dirname, `.env`);
 
-dotenv.config();
-
-const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
-const SERVER_PORT = process.env.SERVER_PORT || 3000;
+console.log('Load ENV from', `${env_path}`);
+dotenv.config({
+  path: env_path,
+});
 
 const SERVER = {
-  hostname: SERVER_HOSTNAME,
-  port: SERVER_PORT,
+  port: process.env.PORT
 };
 
 const REDIS_SUBSCRIPTION = {
-  port: process.env.PORT,
-  host: process.env.REDDIS_HOST,
-  password: process.env.REDDIS_PASSWORD,
-  channel: process.env.REDDIS_SUBSCRIBE_CHANNEL
+  port: process.env.SUBSCRIBER_PORT,
+  host: process.env.SUBSCRIBER_HOST,
+  password: process.env.REDIS_PASSWORD || '',
+  channel: process.env.SUBSCRIBE_COLLECTION
 }
 const REDIS_PUBLISHER = {
-  port: process.env.PORT,
-  host: process.env.REDDIS_HOST,
-  password: process.env.REDDIS_PASSWORD,
-  channel: process.env.REDDIS_PUBLISH_CHANNEL
+  port: process.env.PUBLISHER_PORT,
+  host: process.env.PUBLISHER_HOST,
+  password: process.env.REDIS_PASSWORD || '',
+  channel: process.env.PUBLISH_COLLECTION
 }
 
 const config = {
