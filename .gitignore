@@ -21,6 +21,7 @@ node_modules
 /dist
 /tmp
 /out-tsc
+/logs
 # Only exists if Bazel was run
 /bazel-out
 

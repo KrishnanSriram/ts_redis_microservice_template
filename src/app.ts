@@ -5,6 +5,7 @@ import config from './config/config';
 import {IMQController} from "./controllers/basecontroller";
 import {ReddisMQPublishClient} from "./listener/reddismq/publish";
 import {ReddisMQSubscribeClient} from "./listener/reddismq/subscribe";
+import Logger from "./middleware/logger/logconfig";
 
 export interface IApp {
   listen(): void;
@@ -48,7 +49,7 @@ export default class App implements IApp {
 
   initializeSubscriptions(controllers: IMQController[]) {
     const {subscriber, publisher} = config.reddis;
-    console.log('Reddis configuration', config.reddis);
+    Logger.info('Reddis configuration', config.reddis);
     controllers.forEach((controller: IMQController) => {
       controller.publisher = new ReddisMQPublishClient(parseInt(publisher.port!), publisher.host!, publisher.password!, publisher.channel!);
       controller.subscriber = new ReddisMQSubscribeClient(parseInt(subscriber.port!), subscriber.host!, subscriber.password!, subscriber.channel!);
@@ -64,7 +65,7 @@ export default class App implements IApp {
 
   public listen() {
     this.app.listen(config.server.port, () => {
-      console.log(this.NAMESPACE, `PLOCR Name Verification - NodeJS application ${process.pid} in port ${process.env.PORT}`);
+      Logger.info(`PLOCR Name Verification - NodeJS application ${process.pid} in port ${process.env.PORT}`);
     });
   }
 }
