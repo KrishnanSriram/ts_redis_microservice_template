@@ -3,8 +3,8 @@ import * as bodyParser from 'body-parser';
 import express, { Application } from 'express';
 import config from './config/config';
 import {IMQController} from "./controllers/basecontroller";
-import {ReddisMQPublishClient} from "./listener/reddismq/publish";
-import {ReddisMQSubscribeClient} from "./listener/reddismq/subscribe";
+import {ReddisMQPublishClient} from "./services/reddismq/publish";
+import {ReddisMQSubscribeClient} from "./services/reddismq/subscribe";
 import Logger from "./middleware/logger/logconfig";
 
 export interface IApp {

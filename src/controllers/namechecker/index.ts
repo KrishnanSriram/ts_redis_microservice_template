@@ -1,6 +1,6 @@
 import {IMQController, ISubscribeMessageHandler} from "../basecontroller";
 import {INameCheckVerficationResult, IScorecardInputCommand, IScorecardOutputCommand} from "../../command/namechecker";
-import {IMQPublishClient, IMQSubscribeClient} from "../../listener/reddismq";
+import {IMQPublishClient, IMQSubscribeClient} from "../../services/reddismq";
 import {INameChecker} from "../../services/namecheck";
 import {FullNameChecker} from "../../services/namecheck/fullname";
 import {PartialNameChecker} from "../../services/namecheck/partialname";

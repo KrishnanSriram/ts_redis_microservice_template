@@ -1,4 +1,4 @@
-import {IMQPublishClient, IMQSubscribeClient} from "../../listener/reddismq";
+import {IMQPublishClient, IMQSubscribeClient} from "../../services/reddismq";
 import {IMessageInputCommand, IMessageOutputCommand} from "../../command";
 
 export interface IMQController {
