@@ -1,7 +1,10 @@
 import {INameChecker} from "./index";
 import {INameCheckVerficationResult} from "../../command/namechecker";
+import Logger from "../../middleware/logger";
 
 export class PartialNameChecker implements INameChecker{
+    readonly NAMESPACE = "PartialNameChecker"
+
     checkNameInText(name:string, text:string): INameCheckVerficationResult {
         const lw_name = name.toLowerCase();
         const lw_text = text.toLowerCase();
@@ -29,7 +32,7 @@ export class PartialNameChecker implements INameChecker{
      * b. If we have a match for some words and not for others, we have a partial match
      */
     private checkForPartialName(name: string, text: string) : INameCheckVerficationResult {
-        console.log('info', 'Check for PARTIAL name');
+        Logger.info(this.NAMESPACE,'Check for PARTIAL name');
         let partialMatch = false;
         const splitNames = name.split(' ');
         const partialNames = this.removeSingleLetterPartials(splitNames);
@@ -37,13 +40,11 @@ export class PartialNameChecker implements INameChecker{
         const regex = new RegExp(`\\b(${pipedName})\\b`, "gmi");
         const partialMatchValue = regex.exec(text);
         partialMatch = partialMatchValue ? true : false;
-            //regex.test(text);
-
-        console.log('info', '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        console.log('info', 'MATCHES checkForPartialName:'+partialMatchValue);
-        console.log('info', '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        console.log('info', `Result of partial match test is ${partialMatch}`);
-        console.log('info', `Extracted name(s) is ${partialMatchValue}`);
+        Logger.info(this.NAMESPACE,'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        Logger.info(this.NAMESPACE,'MATCHES checkForPartialName:'+partialMatchValue);
+        Logger.info(this.NAMESPACE,'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        Logger.info(this.NAMESPACE,`Result of partial match test is ${partialMatch}`);
+        Logger.info(this.NAMESPACE,`Extracted name(s) is ${partialMatchValue}`);
         let extractName : string | null = null;
         if(partialMatchValue && partialMatchValue.length > 0) {
             extractName = partialMatchValue[0];

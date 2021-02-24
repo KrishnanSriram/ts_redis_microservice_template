@@ -1,10 +1,11 @@
 import 'mocha';
-import {FullNameChecker} from "../src/helpers/namecheck/fullname";
+import {FullNameChecker} from "../src/services/namecheck/fullname";
 import * as assert from "assert";
-import * as Data from './data.json';
-import {PartialNameChecker} from "../src/helpers/namecheck/partialname";
+import {PartialNameChecker} from "../src/services/namecheck/partialname";
+// declare var require: any;
 
 describe("Check for full names", () => {
+  const Data = require('./data.json');
   let fullnameChecker: FullNameChecker;
   let partialnameChecker: PartialNameChecker;
   before(() => {

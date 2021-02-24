@@ -53,6 +53,7 @@ export default class App implements IApp {
     controllers.forEach((controller: IMQController) => {
       controller.publisher = new ReddisMQPublishClient(parseInt(publisher.port!), publisher.host!, publisher.password!, publisher.channel!);
       controller.subscriber = new ReddisMQSubscribeClient(parseInt(subscriber.port!), subscriber.host!, subscriber.password!, subscriber.channel!);
+      controller.listen();
     });
   }
 

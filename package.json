@@ -2,7 +2,7 @@
   "name": "totpal",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start-my": "tsc && cp ./src/config/my.env ./dist/config/.env && env ENVIRONMENT=my nodemon dist/server.js",
     "start": "tsc && cp src/config/.env ./dist/config/.env && env ENVIRONMENT=my nodemon dist/server.js",

@@ -1,5 +1,6 @@
 import {IMQPublishClient, IMQSubscribeClient} from "./index";
 import redis from 'redis';
+import Logger from "../../middleware/logger";
 
 export class ReddisMQPublishClient implements IMQPublishClient {
     private redisClient: redis.RedisClient;
@@ -18,11 +19,12 @@ export class ReddisMQPublishClient implements IMQPublishClient {
     }
 
     publish(message: string) {
+        Logger.info('Publish', message);
         this.redisClient.publish(this.channel, message, (err, response) => {
             if(err === null) {
-                console.log('POSTED successfully', response);
+                Logger.info('Publish', `Posted successfully. Response is ${response}`);
             } else {
-                console.log('ERROR: Something went wrong. Cannot publish to PERSIST channel');
+                Logger.error('Publish','ERROR: Something went wrong. Could not publish to PERSIST channel');
             }
         })
     }
