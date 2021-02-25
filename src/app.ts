@@ -1,7 +1,7 @@
 import { IAppRoutes } from './routes/interface/approutes';
 import * as bodyParser from 'body-parser';
 import express, { Application } from 'express';
-import config from './config/config';
+import {Configuration, IConfig} from './config/config';
 import {IMQController} from "./controllers/basecontroller";
 import {ReddisMQPublishClient} from "./services/reddismq/publish";
 import {ReddisMQSubscribeClient} from "./services/reddismq/subscribe";
@@ -21,6 +21,7 @@ export default class App implements IApp {
   public app: Application;
   private readonly NAMESPACE: string;
   private controllers: IMQController[] = [];
+  private config: IConfig;
 
   constructor(routes: IAppRoutes[]) {
     this.app = express();
@@ -29,6 +30,7 @@ export default class App implements IApp {
     this.initializeMiddlewares();
     this.initializeAppRoutes(routes);
     this.initializeErrorRoutes();
+    this.config = Configuration.getInstance().LoadConfig();
   }
 
   initializeGlobalLogging() {
@@ -50,12 +52,12 @@ export default class App implements IApp {
   }
 
   initializeSubscriptions(controllers: IMQController[]) {
-    const {subscriber, publisher} = config.reddis;
+    const {subscriber, publisher} = this.config.redis;
     this.controllers = controllers;
-    Logger.info('Reddis configuration', config.reddis);
+    Logger.info('Reddis configuration', this.config.redis);
     controllers.forEach((controller: IMQController) => {
-      controller.publisher = new ReddisMQPublishClient(parseInt(publisher.port!), publisher.host!, publisher.password!, publisher.channel!);
-      controller.subscriber = new ReddisMQSubscribeClient(parseInt(subscriber.port!), subscriber.host!, subscriber.password!, subscriber.channel!);
+      controller.publisher = new ReddisMQPublishClient(this.config.redis.publisher);
+      controller.subscriber = new ReddisMQSubscribeClient(this.config.redis.subscriber);
       controller.listen();
     });
   }
@@ -72,7 +74,7 @@ export default class App implements IApp {
   }
 
   public listen() {
-    this.app.listen(config.server.port, () => {
+    this.app.listen(this.config.server.port, () => {
       Logger.info(`PLOCR Name Verification - NodeJS application ${process.pid} in port ${process.env.PORT}`);
     });
   }

@@ -2,22 +2,23 @@ import {IMQSubscribeClient} from "./index";
 import redis from 'redis';
 import {IMQController, ISubscribeMessageHandler} from "../../controllers/basecontroller";
 import Logger from "../../middleware/logger";
+import {RedisConfig} from "../../config/config";
 
 export class ReddisMQSubscribeClient implements IMQSubscribeClient {
     private redisClient: redis.RedisClient;
     private channel : string;
     public delegate: ISubscribeMessageHandler | null = null;
 
-    constructor(port: number, host: string, password: string | null, channel: string) {
-        if(password)
+    constructor(config: RedisConfig) {
+        if(config.password)
             this.redisClient = redis.createClient({
-                port, host, password : password
+                port:config.port, host:config.host, password : config.password
             });
         else
             this.redisClient = redis.createClient({
-                port, host
+                port: config.port, host:config.host
             });
-        this.channel = channel;
+        this.channel = config.channel;
     }
 
     subscribe() {
