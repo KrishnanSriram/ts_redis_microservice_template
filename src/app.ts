@@ -14,11 +14,13 @@ export interface IApp {
   initializeAppRoutes(routes: IAppRoutes[]): void;
   initializeSubscriptions(controllers: IMQController[]) : void;
   initializeErrorRoutes(): void;
+  getControllers(): IMQController[];
 }
 
 export default class App implements IApp {
   public app: Application;
   private readonly NAMESPACE: string;
+  private controllers: IMQController[] = [];
 
   constructor(routes: IAppRoutes[]) {
     this.app = express();
@@ -49,12 +51,17 @@ export default class App implements IApp {
 
   initializeSubscriptions(controllers: IMQController[]) {
     const {subscriber, publisher} = config.reddis;
+    this.controllers = controllers;
     Logger.info('Reddis configuration', config.reddis);
     controllers.forEach((controller: IMQController) => {
       controller.publisher = new ReddisMQPublishClient(parseInt(publisher.port!), publisher.host!, publisher.password!, publisher.channel!);
       controller.subscriber = new ReddisMQSubscribeClient(parseInt(subscriber.port!), subscriber.host!, subscriber.password!, subscriber.channel!);
       controller.listen();
     });
+  }
+
+  getControllers(): IMQController[] {
+    return this.controllers;
   }
 
   initializeErrorRoutes() {

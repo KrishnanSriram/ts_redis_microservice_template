@@ -1,7 +1,12 @@
 import {IMQPublishClient, IMQSubscribeClient} from "../../services/reddismq";
 import {IMessageInputCommand, IMessageOutputCommand} from "../../command";
+import {IApp} from "../../app";
 
-export interface IMQController {
+export interface IController {
+    readonly app: IApp;
+}
+
+export interface IMQController extends IController {
     publisher: IMQPublishClient | null;
     subscriber: IMQSubscribeClient | null;
     listen() : void;

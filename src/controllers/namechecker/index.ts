@@ -5,19 +5,21 @@ import {INameChecker} from "../../services/namecheck";
 import {FullNameChecker} from "../../services/namecheck/fullname";
 import {PartialNameChecker} from "../../services/namecheck/partialname";
 import Logger from "../../middleware/logger";
+import {IApp} from "../../app";
 
 export class ScorecardNameCheckerMQController implements IMQController, ISubscribeMessageHandler{
     readonly NAMESPACE = "ScorecardNameCheckerMQController";
-
+    readonly app: IApp;
     publisher: IMQPublishClient | null = null;
     subscriber: IMQSubscribeClient | null = null;
     nameVerifiers: INameChecker[];
 
-    constructor() {
+    constructor(app: IApp) {
         this.nameVerifiers = [
             new FullNameChecker(),
             new PartialNameChecker()
-        ]
+        ];
+        this.app = app;
     }
     //TODO: should this be async?
     messageHandler(command: IScorecardInputCommand) {
